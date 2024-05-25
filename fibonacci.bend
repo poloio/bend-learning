@@ -1,3 +1,8 @@
+# The "memo" implementation is an attempt to avoid the process calculating the same number twice
+# I say attempt, because in the end it created a memory problem without even solving what it needed to solve 
+# (the threads can't see each other's calculations due to this language being painfuly immutable)
+
+# Returns the result saved for a nth number if exists
 def x_inmemo(memo, x):
   fold memo with x:
     case List/Cons:
@@ -9,6 +14,7 @@ def x_inmemo(memo, x):
     case List/Nil:
       return 0
 
+# Merges two lists, see Bend's guide on List datatype
 def merge_memos(memo_1, res_1, memo_2, res_2):
   to_list = List/Cons(res_1, memo_1)
   from_list = List/Cons(res_2, memo_2)
@@ -22,6 +28,7 @@ def merge_memos(memo_1, res_1, memo_2, res_2):
       return from_list 
     
 
+# Gets the nth number in the fibonacci sequence, checking for already calculated numbers
 def getFibonacci(n):
   bend x = n, memo = []:
     when x > 1:
@@ -37,4 +44,5 @@ def getFibonacci(n):
       return (x, memo)
 
 def main():
-  return getFibonacci(5)
+  (res, memo) = getFibonacci(10)
+  return res
